@@ -36,8 +36,8 @@ class Camera{
 
     public:
         
-        Camera(glm::vec3 position, int width, int height, 
-               float yaw, float pitch, float fov);
+        Camera(glm::vec3 position = glm::vec3(0.0f), int width = 1920, int height = 1080, 
+               float yaw = 0.0f, float pitch = 0.0f, float fov = 90.0f);
     
 
         // Get Camera's Information
