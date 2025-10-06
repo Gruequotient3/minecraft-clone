@@ -11,6 +11,14 @@
 
 Shader::Shader() : id{0} { }
 Shader::Shader(const char *vertexPath, const char *fragmentPath){
+    Load(vertexPath, fragmentPath);
+}
+
+void Shader::Destroy(){
+    if (id) { glDeleteProgram(id); id = 0; }
+}
+
+void Shader::Load(const char *vertexPath, const char *fragmentPath){
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
@@ -72,12 +80,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath){
     glDeleteShader(fragment);
 }
 
-void Shader::Destroy(){
-    if (id) { glDeleteProgram(id); id = 0; }
-}
-
-
-void Shader::Use(){
+void Shader::Use() const{
     glUseProgram(id);
 }
 
@@ -133,6 +136,32 @@ void Shader::CheckCompileErrors(unsigned int shader, std::string type){
         }
     }
 }
+
+ShaderList::ShaderList(){
+    shaders.push_back(Shader{});
+}
+
+Shader& ShaderList::operator[](long unsigned int pos){
+    if (pos < shaders.size()) return shaders[pos];
+    return shaders[0];
+}
+
+Shader& ShaderList::operator[](ShaderName pos){
+    if ((long unsigned int)pos < shaders.size()) return shaders[int(pos)];
+    return shaders[0];
+}
+
+void ShaderList::Init(){
+    shaders.push_back(Shader{"res/shaders/shader.vert", "res/shaders/solid.frag"});
+}
+
+void ShaderList::Destroy(){
+    for (long unsigned int i = 0; i < shaders.size(); ++i){
+        shaders[i].Destroy();
+    }
+    shaders.clear();
+}
+
 
 
 #endif

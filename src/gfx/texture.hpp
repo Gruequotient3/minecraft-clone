@@ -16,7 +16,7 @@ class Texture{
         Texture(const char *imagePath, GLenum format);
         
         void Destroy();
-        void LoadTexture(const char *imagePath, GLenum format);
+        void Load(const char *imagePath, GLenum format);
 };
 
 #endif

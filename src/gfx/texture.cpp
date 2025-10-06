@@ -14,10 +14,10 @@ void Texture::Destroy(){
 }
 
 Texture::Texture(const char *imagePath, GLenum format) : id{0} {
-    LoadTexture(imagePath, format);
+    Load(imagePath, format);
 }
 
-void Texture::LoadTexture(const char *imagePath, GLenum format){
+void Texture::Load(const char *imagePath, GLenum format){
     if (id != 0) glDeleteTextures(1, &id);
 
     type = GL_TEXTURE_2D;
@@ -29,8 +29,8 @@ void Texture::LoadTexture(const char *imagePath, GLenum format){
     // Texture Parameter
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     // load image and set to the texture
     stbi_set_flip_vertically_on_load(false);

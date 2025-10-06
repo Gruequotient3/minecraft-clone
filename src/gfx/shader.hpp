@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+enum class ShaderName{
+    NONE = 0, 
+    BLOCK,
+};
+
 class Shader{
     private:
         void CheckCompileErrors(unsigned int shader, std::string type);
@@ -18,7 +23,8 @@ class Shader{
 
         void Destroy();
 
-        void Use();
+        void Load(const char *vertexPath, const char *fragmentPath);
+        void Use() const;
 
         void SetBool(const std::string &name, bool value) const;
         void SetFloat(const std::string &name, float value) const;
@@ -28,6 +34,20 @@ class Shader{
         void SetVec3(const std::string &name, glm::vec3 value) const;
         void SetVec3p(const std::string &name, int count, const float* value) const;
         void SetMat4(const std::string &name, GLboolean transpose, const GLfloat *value) const;
+};
+
+class ShaderList{
+    private:
+        std::vector<Shader> shaders;
+    protected:
+    public:
+        ShaderList();
+        
+        Shader& operator[](long unsigned int pos);
+        Shader& operator[](ShaderName pos);
+
+        void Init();
+        void Destroy();
 };
 
 #endif

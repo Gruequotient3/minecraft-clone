@@ -19,13 +19,9 @@ class Camera{
         
         glm::vec3 position;
         
-        glm::vec3 up;
-        glm::vec3 front;
-        
         glm::mat4 view;
         glm::mat4 perspective;
         glm::mat4 orthographic;
-
 
         void UpdateFaceDirection();
         void UpdateMatrices();
@@ -36,8 +32,11 @@ class Camera{
 
     public:
         
+        glm::vec3 up;
+        glm::vec3 front;
+
         Camera(glm::vec3 position = glm::vec3(0.0f), int width = 1920, int height = 1080, 
-               float yaw = 0.0f, float pitch = 0.0f, float fov = 90.0f);
+                float yaw = 90.0f, float pitch = 0.0f, float fov = 90.0f);
     
 
         // Get Camera's Information

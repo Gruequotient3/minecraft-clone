@@ -2,6 +2,8 @@ PROG = main
 
 IMGUI_DIR = ./lib/imgui
 
+DEBUG = -fsanitize=address
+
 CC = g++
 CXXFLAGS = -Wall -Wextra -O3
 CXXFLAGS += -Ilib/glad/include
@@ -39,8 +41,12 @@ RM = rm -rf
 
 all: $(PROG)
 
+debug: $(OBJ)
+	$(CC) $(DEBUG) $(OBJ) $(LDFLAGS) -o $(PROG)
+
 $(PROG): $(OBJ)
-	$(CC) -o main $(OBJ) $(LDFLAGS)
+	$(RM) imgui.ini
+	$(CC) $(OBJ) $(LDFLAGS) -o $(PROG)
 
 libs:
 	@cd lib/glad && $(CC) -o src/glad.o -Iinclude -c src/glad.c && ar rcs libglad.a src/glad.o

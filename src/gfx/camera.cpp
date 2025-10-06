@@ -3,8 +3,10 @@
 
 #include "camera.hpp"
 
+#include <cmath>
+
 Camera::Camera(glm::vec3 position, int width, int height,
-               float yaw, float pitch, float fov){
+            float yaw, float pitch, float fov){
     this->position = position;
     
     this->width = width;
@@ -16,7 +18,7 @@ Camera::Camera(glm::vec3 position, int width, int height,
     this->fov = fov;
 
     up = glm::vec3(0.0f, 1.0f, 0.0f);
-    UpdateFaceDirection();
+    UpdateFaceDirection(); 
 }
 
 
@@ -26,6 +28,7 @@ void Camera::UpdateFaceDirection(){
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     
     front = glm::normalize(front);
+    UpdateViewMatrice();
 }
 
 void Camera::UpdateMatrices(){
@@ -39,15 +42,14 @@ void Camera::UpdateViewMatrice(){
 }
 
 void Camera::UpdatePerspectiveMatrice(){
-    perspective = glm::perspective(fov, ratio, 0.1f, 100.0f);
+    perspective = glm::perspective(fov, ratio, 0.1f, 10000.0f);
 }
 
 void Camera::UpdateOrthographicMatrice(){
     orthographic = glm::ortho(-width / 2.0f, width/ 2.0f, 
-                              -height / 2.0f, height / 2.0f,
-                              -1000.0f, 1000.0f);
+                            -height / 2.0f, height / 2.0f,
+                            -1000.0f, 1000.0f);
 }
-
 
 int Camera::GetWidth() { return width; }
 int Camera::GetHeight() { return height; }
@@ -71,30 +73,25 @@ void Camera::SetResolution(int width, int height){
 }
 
 void Camera::SetYaw(float yaw){
-    if (yaw < -89.0f) yaw = -89.0f;
-    else if (yaw > 89.0f) yaw = 89.0f; 
+    if (yaw < -180.0f) yaw = yaw + 360;
+    else if (yaw > 180.0f) yaw = yaw - 360; 
 
     this->yaw = yaw;
     UpdateFaceDirection();
 }
 
 void Camera::SetPitch(float pitch){
-    if (pitch < -89.0f) pitch = -89.0f;
-    else if (pitch > 89.0f) pitch = 89.0f; 
-
+    if (pitch < -90.0f) pitch = -89.9f;
+    else if (pitch > 90.0f) pitch = 89.9f; 
 
     this->pitch = pitch;
     UpdateFaceDirection();
 }
 
 void Camera::SetAngles(float yaw, float pitch){
-    if (yaw < -89.0f) yaw = -89.0f;
-    else if (yaw > 89.0f) yaw = 89.0f; 
-    if (pitch < -89.0f) pitch = -89.0f;
-    else if (pitch > 89.0f) pitch = 89.0f; 
+    SetYaw(yaw);
+    SetPitch(pitch);
 
-    this->yaw = yaw;
-    this->pitch = pitch;
     UpdateFaceDirection();
 }
 
